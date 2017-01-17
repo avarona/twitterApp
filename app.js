@@ -5,31 +5,39 @@
 
 const PORT = 3000;
 const express = require('express');
-const app = express();
-const volleyball = require('volleyball')
+const volleyball = require('volleyball');
+const nunjucks = require('nunjucks');
+const routes = require('./routes/');
 
+const app = express();
 app.use(volleyball);
+app.use('/', routes);
+
+app.set('view engine', 'html');
+app.engine('html', nunjucks.render);
+nunjucks.configure('views');
+
+let page = {
+  title: 'Twitter App',
+  people: [
+    { name: 'Alex' },
+    { name: 'Silvia' },
+    { name: 'Mochi' }
+  ]
+};
+
+nunjucks.configure('views', {noCache: true});
+nunjucks.render('index.html', page, function(err, output) {
+  console.log(output);
+});
+
+app.get('/', function(req, res) {
+  res.render( 'index', {title: page.title, people: page.people} );
+});
 
 app.use('/:id?', function(req, res, next) {
   if (!req.params.id) console.log(req.method + ' /' + res.statusCode);
   else console.log(req.method + ' /' + req.params.id);
-  next();
-});
-
-app.get('/', function(req, res, next) {
-  res.send('This appears with a /');
-  console.log(req.method + ' /');
-  next();
-});
-
-// app.use('/news', function(req, res, next) {
-//   console.log('news has been hit');
-//   res.send('this is the news chain');
-//   next();
-// });
-
-app.get('/news/:id?', function(req, res, next) {
-  res.send('Youve reached the news page' + req.params.id);
   next();
 });
 
