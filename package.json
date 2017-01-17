@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/avarona/twitterApp#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "lodash": "^4.17.4",
+    "nunjucks": "^3.0.0",
     "volleyball": "^1.4.1"
   }
 }

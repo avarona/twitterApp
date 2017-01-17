@@ -2,10 +2,13 @@ let _ = require('lodash');
 
 let data = [];
 
+let val = 0;
 let add = function(name, content) {
+  val++;
   data.push({
     name: name,
-    content: content
+    content: content,
+    id: val.toString()
   });
 }
 
